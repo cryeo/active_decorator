@@ -146,9 +146,8 @@ class BooksController < ApplicationController
   def purchase
     @book = Author.find(params[:author_id]).books.find(params[:id])
 
-    @view_context_before_sending_mail = ActiveDecorator::ViewContext.current
-    BookMailer.thanks(@book).deliver
-    raise 'Wrong ViewContext!' if ActiveDecorator::ViewContext.current != @view_context_before_sending_mail
+    @controller_before_sending_mail = ActiveDecorator::Controller.current
+    raise 'Wrong view context!' unless ActiveDecorator::Controller.current.equal?(@controller_before_sending_mail)
   end
 end
 class MoviesController < ApplicationController
@@ -160,6 +159,9 @@ end
 # mailers
 class BookMailer < ActionMailer::Base
   def thanks(book)
+    p RequestStore.store[:active_decorator_controllers]
+    p "DEBUG"
+    p RequestStore.store[:active_decorator_controllers].count
     @book = book
     mail from: 'nobody@example.com', to: 'test@example.com', subject: 'Thanks'
   end
