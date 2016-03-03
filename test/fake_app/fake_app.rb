@@ -159,9 +159,6 @@ end
 # mailers
 class BookMailer < ActionMailer::Base
   def thanks(book)
-    p RequestStore.store[:active_decorator_controllers]
-    p "DEBUG"
-    p RequestStore.store[:active_decorator_controllers].count
     @book = book
     mail from: 'nobody@example.com', to: 'test@example.com', subject: 'Thanks'
   end
