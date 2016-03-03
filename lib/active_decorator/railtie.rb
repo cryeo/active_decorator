@@ -1,4 +1,4 @@
-require 'active_decorator/view_context'
+require 'active_decorator/controller'
 require 'rails'
 
 module ActiveDecorator
@@ -16,7 +16,7 @@ module ActiveDecorator
         require 'active_decorator/monkey/action_controller/base/rescue_from'
         ActionController::Base.send :prepend, ActiveDecorator::Monkey::ActionController::Base
 
-        ActionController::Base.send :include, ActiveDecorator::ViewContext::Filter
+        ActionController::Base.send :include, ActiveDecorator::Controller::Filter
       end
 
       ActiveSupport.on_load :action_mailer do
@@ -24,7 +24,7 @@ module ActiveDecorator
         ActionMailer::Base.send :prepend, ActiveDecorator::Monkey::AbstractController::Rendering
 
         if ActionMailer::Base.respond_to? :before_action
-          ActionMailer::Base.send :include, ActiveDecorator::ViewContext::Filter
+          ActionMailer::Base.send :include, ActiveDecorator::Controller::Filter
         end
       end
     end
