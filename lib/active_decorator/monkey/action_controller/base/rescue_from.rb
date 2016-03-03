@@ -3,10 +3,10 @@ module ActiveDecorator
     module ActionController
       module Base
         def rescue_with_handler(*)
-          ActiveDecorator::ViewContext.push(view_context)
+          ActiveDecorator::Controller.push(self)
           super
         ensure
-          ActiveDecorator::ViewContext.pop
+          ActiveDecorator::Controller.pop
         end
       end
     end
