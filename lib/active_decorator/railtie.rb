@@ -12,9 +12,6 @@ module ActiveDecorator
       end
 
       ActiveSupport.on_load :action_controller do
-        require 'active_decorator/monkey/action_controller/base/rescue_from'
-        ActionController::Base.send :prepend, ActiveDecorator::Monkey::ActionController::Base
-
         ActionController::Base.send :include, ActiveDecorator::Controller::Filter
       end
 
