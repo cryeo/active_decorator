@@ -1,19 +1,19 @@
 require 'request_store'
 
 module ActiveDecorator
-  module ViewContext
+  module Controller
     class << self
       def current
-        RequestStore.store[:active_decorator_view_contexts].last
+        RequestStore.store[:active_decorator_controllers].last
       end
 
-      def push(view_context)
-        RequestStore.store[:active_decorator_view_contexts] ||= []
-        RequestStore.store[:active_decorator_view_contexts] << view_context
+      def push(controller)
+        RequestStore.store[:active_decorator_controllers] ||= []
+        RequestStore.store[:active_decorator_controllers] << controller
       end
 
       def pop
-        RequestStore.store[:active_decorator_view_contexts].pop if RequestStore.store[:active_decorator_view_contexts]
+        RequestStore.store[:active_decorator_controllers].pop if RequestStore.store[:active_decorator_contorllers]
       end
     end
 
@@ -24,19 +24,19 @@ module ActiveDecorator
         if Rails::VERSION::MAJOR >= 4
           around_action do |controller, blk|
             begin
-              ActiveDecorator::ViewContext.push controller.view_context
+              ActiveDecorator::Controller.push controller
               blk.call
             ensure
-              ActiveDecorator::ViewContext.pop
+              ActiveDecorator::Controller.pop
             end
           end
         else
           around_filter do |controller, blk|
             begin
-              ActiveDecorator::ViewContext.push controller.view_context
+              ActiveDecorator::Controller.push controller
               blk.call
             ensure
-              ActiveDecorator::ViewContext.pop
+              ActiveDecorator::Controller.pop
             end
           end
         end
