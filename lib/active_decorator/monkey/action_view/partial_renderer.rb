@@ -2,7 +2,7 @@ module ActiveDecorator
   module Monkey
     module ActionView
       module PartialRenderer
-        def setup(*)
+        def setup(context, options, block)
           super
 
           @locals.values.each do |v|
